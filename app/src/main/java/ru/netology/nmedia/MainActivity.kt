@@ -16,9 +16,12 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         viewModel.data.observe(this) { post ->
+
             with(binding){
+                author.text = post.author
+                published.text = post.published
+                postContent.text = post.content
                 shareValue.text = numToString(post.numShares)
                 viewsValue.text = numToString(post.numViews)
                 likesValue.text = numToString(post.numLikes)
