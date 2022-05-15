@@ -1,25 +1,23 @@
-package ru.netology.nmedia.impl
+package ru.netology.nmedia.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.Post
+import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.PostBinding
 
-typealias OnPostLikeClicked = (Post) -> Unit
-typealias OnPostShareClicked = (Post) -> Unit
-
 internal class PostAdapter(
-    private val onLikeClicked : OnPostLikeClicked,
-    private val onShareClicked : OnPostShareClicked
+    private val interactionListener:PostInteractionListener
 ) : ListAdapter<Post,PostAdapter.ViewHolder>(DiffCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = PostBinding.inflate(inflater,parent,false)
-        return ViewHolder(binding,onShareClicked,onLikeClicked)
+        return ViewHolder(binding,interactionListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -28,14 +26,33 @@ internal class PostAdapter(
 
     class ViewHolder(
         private val binding: PostBinding,
-        onLikeClicked : OnPostLikeClicked,
-        onShareClicked : OnPostShareClicked
+        listener:PostInteractionListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
         private lateinit var post : Post
+
+        private val popupMenu by lazy{
+            PopupMenu(itemView.context,binding.options ).apply {
+                inflate(R.menu.options_post)
+                setOnMenuItemClickListener { item ->
+                    when(item.itemId){
+                        R.id.remove -> {
+                            listener.onRemoveClicked(post)
+                            true
+                        }
+                        R.id.edit -> {
+                            listener.onEditClicked(post)
+                            true
+                        }
+                        else -> false
+                    }
+                }
+            }
+        }
+
         init{
-            binding.share.setOnClickListener { onShareClicked(post) }
-            binding.likes.setOnClickListener { onLikeClicked(post) }
+            binding.share.setOnClickListener { listener.onShareClicked(post) }
+            binding.likes.setOnClickListener { listener.onLikeClicked(post) }
         }
 
         fun bind(post: Post) {
@@ -47,11 +64,12 @@ internal class PostAdapter(
                 shareValue.text = numToString(post.numShares)
                 likesValue.text = numToString(post.numLikes)
                 likes.setImageResource(getLikesIconResId(post.likedByMe))
+                options.setOnClickListener {popupMenu.show()}
             }
         }
 
         private fun getLikesIconResId(liked: Boolean) =
-            if (liked) ru.netology.nmedia.R.drawable.ic_baseline_favorite_24 else ru.netology.nmedia.R.drawable.ic_baseline_favorite_border_24
+            if (liked) R.drawable.ic_baseline_favorite_24 else ru.netology.nmedia.R.drawable.ic_baseline_favorite_border_24
 
         private fun numToString(value: Int): String {
             return when {
