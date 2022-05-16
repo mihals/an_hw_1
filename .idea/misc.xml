@@ -3,7 +3,24 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/drawable/ic_baseline_add_task_24.xml" value="0.17407407407407408" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/drawable/ic_baseline_create_24.xml" value="0.16574074074074074" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/drawable/ic_baseline_highlight_off_24.xml" value="0.16574074074074074" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/drawable/ic_baseline_visibility_24.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.12962962962962962" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/drawable/ic_like.xml" value="0.11481481481481481" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/drawable/ic_options_24dp.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/drawable/ic_save_48.xml" value="0.17407407407407408" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/layout/activity_main0.xml" value="0.1814814814814815" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/layout/post.xml" value="0.22" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/layout/post_list_item.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/layout/reserve_layout.xml" value="0.1814814814814815" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/menu/options_post.xml" value="0.1814814814814815" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.12962962962962962" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/NMedia/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1259259259259259" />
       </map>
     </option>
   </component>
