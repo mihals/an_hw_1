@@ -61,9 +61,10 @@ internal class PostAdapter(
                 author.text = post.author
                 published.text = post.published
                 postContent.text = post.content
-                shareValue.text = numToString(post.numShares)
-                likesValue.text = numToString(post.numLikes)
-                likes.setImageResource(getLikesIconResId(post.likedByMe))
+                share.text = numToString(post.numShares)
+                likes.text = numToString(post.numLikes)
+                //likes.setButtonDrawable(getLikesIconResId(post.likedByMe))
+                likes.isChecked=post.likedByMe
                 options.setOnClickListener {popupMenu.show()}
             }
         }

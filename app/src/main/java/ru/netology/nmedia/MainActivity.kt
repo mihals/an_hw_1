@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.saveButton.setOnClickListener {
+
             val caption = findViewById<View>(R.id.canselEditGroup)
             caption.visibility = View.GONE
             with(binding.content) {
@@ -39,15 +40,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-//        binding.cancelEditButton.setOnClickListener{
-//            val caption = findViewById<View>(R.id.canselEditGroup)
-//            caption.visibility = View.GONE
-//            binding.content.clearFocus()
-//            binding.content.hideKeyboard()
-//        }
-//
             binding.cancelEditButton.setOnClickListener{
-            val caption = findViewById<View>(R.id.canselEditGroup)
+            val caption = binding.canselEditGroup
             caption.visibility = View.GONE
             binding.content.setText("")
             binding.content.clearFocus()
