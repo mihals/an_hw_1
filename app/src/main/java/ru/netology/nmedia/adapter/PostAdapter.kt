@@ -51,6 +51,7 @@ internal class PostAdapter(
         }
 
         init{
+            //binding.share.setOnClickListener{listener.onShareClicked(post)}
             binding.share.setOnClickListener { listener.onShareClicked(post) }
             binding.likes.setOnClickListener { listener.onLikeClicked(post) }
         }
