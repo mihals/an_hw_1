@@ -8,4 +8,7 @@
     <string name="description_post_share">Share</string>
     <string name="post_text">Post text</string>
     <string name="menu_edit">Edit</string>
+    <string name="chooser_share_post">Share post</string>
+    <string name="description_post_save">Save</string>
+    <string name="add_post">Add post</string>
 </resources>

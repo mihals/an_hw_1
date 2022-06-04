@@ -29,7 +29,8 @@ class InMemoryPostRepository() : PostRepository {
                 published="7 мая",
                 numLikes = 999,
                 numShares = 1,
-                likedByMe = false
+                likedByMe = false,
+                video = if(index==1) {"https://www.youtube.com/watch?v=cqOdV4mDPXc&list=WL&index=20"} else null
             )
         }
     )
