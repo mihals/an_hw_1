@@ -15,6 +15,7 @@ class PostViewModel:ViewModel(), PostInteractionListener {
     val data by repository::data
     val sharePostContent = SingleLiveEvent<String>()
     val navigateToPostContentScreenEvent = SingleLiveEvent<Post?>()
+    val playVideo = SingleLiveEvent<String>()
 
     override fun onLikeClicked(post : Post) = repository.like(post.id)
 
@@ -49,6 +50,11 @@ class PostViewModel:ViewModel(), PostInteractionListener {
 
     override fun onEditClicked(post: Post) {
         navigateToPostContentScreenEvent.value=post.copy()
+    }
+
+    override fun onPlayVideoClicked(post: Post) {
+        val url = requireNotNull(post.video)
+        playVideo.value = url
     }
 
     fun onUpdatePost(post:Post){

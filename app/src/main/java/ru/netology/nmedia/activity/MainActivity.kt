@@ -1,11 +1,13 @@
 package ru.netology.nmedia.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.result.launch
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import ru.netology.nmedia.R
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.databinding.ActivityMainBinding
@@ -44,6 +46,11 @@ class MainActivity : AppCompatActivity() {
                 intent, getString(R.string.chooser_share_post)
             )
             startActivity(shareIntent)
+        }
+
+        viewModel.playVideo.observe(this) { videoUrl ->
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl))
+            startActivity(intent)
         }
 
         val postContentActivityLauncher =
