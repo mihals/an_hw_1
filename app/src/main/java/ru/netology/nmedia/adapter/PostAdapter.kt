@@ -4,12 +4,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.core.view.isVisible
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.Post
 import ru.netology.nmedia.R
+import ru.netology.nmedia.databinding.FeedFragmentBinding
 import ru.netology.nmedia.databinding.PostBinding
+import ru.netology.nmedia.viewModel.PostViewModel
+import java.security.AccessController.getContext
 
 internal class PostAdapter(
     private val interactionListener:PostInteractionListener
@@ -38,10 +43,20 @@ internal class PostAdapter(
                 setOnMenuItemClickListener { item ->
                     when(item.itemId){
                         R.id.remove -> {
+                            //val root = binding.root
+                            //findNavController(FeedFragmentBinding).currentDestination
+                            val ctx = getContext()
+
+                            //findNavController()
+                            //listener.onRemoveFromScrolledPost()
                             listener.onRemoveClicked(post)
+                            binding.root.findNavController().popBackStack()
                             true
                         }
                         R.id.edit -> {
+                            if(PostViewModel.sharedView!=null)
+                                binding.root.findNavController().popBackStack()
+
                             listener.onEditClicked(post)
                             true
                         }
@@ -52,14 +67,20 @@ internal class PostAdapter(
         }
 
         init{
-            //binding.share.setOnClickListener{listener.onShareClicked(post)}
-            binding.share.setOnClickListener { listener.onShareClicked(post) }
+            binding.share.setOnClickListener {
+                listener.onShareClicked(post)
+                
+            }
             binding.likes.setOnClickListener { listener.onLikeClicked(post) }
             binding.videoBanner.setOnClickListener{
                 listener.onPlayVideoClicked(post)
+
             }
             binding.playButton.setOnClickListener {
                 listener.onPlayVideoClicked(post)
+            }
+            itemView.setOnClickListener{
+                listener.onPostCardClicked(it)
             }
         }
 

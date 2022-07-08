@@ -1,16 +1,19 @@
 package ru.netology.nmedia.viewModel
 
 import android.app.Application
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.Post
-import ru.netology.nmedia.activity.PostContentActivity
+import ru.netology.nmedia.R
+import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.adapter.PostInteractionListener
 import ru.netology.nmedia.data.PostRepository
 import ru.netology.nmedia.impl.FilePostRepository
-import ru.netology.nmedia.impl.InMemoryPostRepository
-import ru.netology.nmedia.impl.SharedPrefsPostRepository
 import ru.netology.nmedia.util.SingleLiveEvent
 
 class PostViewModel(
@@ -21,18 +24,26 @@ class PostViewModel(
 
     val data by repository::data
     val sharePostContent = SingleLiveEvent<String>()
-    val navigateToPostContentScreenEvent = SingleLiveEvent<Post?>()
+    val navigateToPostContentScreenEvent = SingleLiveEvent<String>()
     val playVideo = SingleLiveEvent<String>()
+    val navigateToSinglePostFragmentEvent = SingleLiveEvent<View?>()
+    val navigateToFeedFragmentFromScrollPost = SingleLiveEvent<String?>()
+    var singlePostView = MutableLiveData<View?>()
+
 
     override fun onLikeClicked(post: Post) = repository.like(post.id)
 
     override fun onShareClicked(post: Post) {
         repository.share(post.id)
         sharePostContent.value = post.content
+
     }
 
     override fun onRemoveClicked(post: Post) {
+        //currentPost.value=post
+        //findNavController(R.id.nav_graph)
         repository.delete(post.id)
+        navigateToFeedFragmentFromScrollPost.call()
     }
 
     val currentPost = MutableLiveData<Post?>(null)
@@ -56,7 +67,11 @@ class PostViewModel(
     }
 
     override fun onEditClicked(post: Post) {
-        navigateToPostContentScreenEvent.value=post.copy()
+        currentPost.value=post
+        if(sharedView!=null)
+        {
+        }
+        navigateToPostContentScreenEvent.value = post.content
     }
 
     override fun onPlayVideoClicked(post: Post) {
@@ -69,7 +84,27 @@ class PostViewModel(
     }
 
     fun onDeleteViewClicked(post:Post) = repository.delete(post.id)
+
     fun onAddClicked() {
         navigateToPostContentScreenEvent.call()
+    }
+
+    override fun onPostCardClicked(postView: View) {
+        if(sharedView==null){
+            sharedView=postView
+            navigateToSinglePostFragmentEvent.call()
+        }
+
+    }
+
+    override fun onRemoveFromScrolledPost() {
+        val obs = navigateToFeedFragmentFromScrollPost.hasObservers()
+        val activeObs = navigateToFeedFragmentFromScrollPost.hasActiveObservers()
+        //navigateToFeedFragmentFromScrollPost.value="str"
+        navigateToFeedFragmentFromScrollPost.call()
+    }
+
+    companion object{
+        var sharedView:View? = null
     }
 }

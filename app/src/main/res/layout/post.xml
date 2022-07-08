@@ -3,6 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootWidget"
+    android:background="@android:drawable/btn_default"
+    android:clickable="true"
+    android:focusable="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -67,7 +71,7 @@
         app:layout_constraintTop_toBottomOf="@id/headerBarrier"
         app:layout_constraintStart_toStartOf="parent"
         android:padding="@dimen/common_spacing"
-        tools:text="POST"/>
+        tools:text="@string/large_text"/>
 
     <ImageView
         android:id="@+id/video_banner"

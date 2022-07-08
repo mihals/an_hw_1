@@ -65,6 +65,8 @@ class FilePostRepository(
             nextId = posts.maxOfOrNull { it.id }!! + 1L
         }
 
+        posts.first().video =  "https://www.youtube.com/watch?v=cqOdV4mDPXc&list=WL&index=20"
+
         data = MutableLiveData(posts)
     }
 
