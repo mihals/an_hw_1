@@ -9,6 +9,10 @@
         android:id="@+id/feedFragment"
         android:name="ru.netology.nmedia.ui.FeedFragment"
         tools:layout = "@layout/feed_fragment">
+        <argument
+            android:name="initialContent"
+            app:argType="string"
+            app:nullable="true"/>
         <action
             android:id="@+id/toPostContentFragment"
             app:destination="@id/postContentFragment" />
@@ -28,9 +32,5 @@
     <fragment
         android:id="@+id/scrollPostFragment"
         android:name="ru.netology.nmedia.ScrollPostFragment"
-        tools:layout="@layout/scroll_post_fragment" >
-        <action
-            android:id="@+id/action_scrollPostFragment_to_feedFragment"
-            app:destination="@id/feedFragment" />
-    </fragment>
+        tools:layout="@layout/scroll_post_fragment" />
 </navigation>

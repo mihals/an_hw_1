@@ -53,8 +53,10 @@ class FeedFragment : Fragment() {
             viewModel.onSaveButtonClick(newPostContent)
         }
 
-        viewModel.navigateToPostContentScreenEvent.observe(this){initialContent ->
-            val srcFragment = findNavController().currentDestination?.id
+        viewModel.navigateToPostContentScreenEvent.observeForever(){initialContent ->
+            val curFragment = findNavController().currentDestination?.id
+            val feedFragment = findNavController().findDestination(R.id.feedFragment)?.id
+            val scrFragment = findNavController().findDestination(R.id.scrollPostFragment)?.id
             val direction = FeedFragmentDirections.toPostContentFragment(initialContent)
             findNavController().navigate(direction)
         }
@@ -68,7 +70,7 @@ class FeedFragment : Fragment() {
             val jsonPost = Gson().toJson(it)
 
             findNavController().navigate(
-                R.id.action_feedFragment_to_scrollPostFragment,
+                R.id.scrollPostFragment,
                 ScrollPostFragment.createBundle(jsonPost)
             )
         }

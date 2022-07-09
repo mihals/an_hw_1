@@ -60,9 +60,27 @@ class ScrollPostFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+//        val scrollContainer = PostViewModel.sharedView
+//        (scrollContainer?.parent as ViewGroup).removeView(scrollContainer)
+//        layoutInflater.inflate(R.layout.scroll_post_fragment, null, false)
+//        (scrollContainer.findViewById(R.id.linearContainer) as ViewGroup).addView(scrollContainer)
         (PostViewModel.sharedView?.parent as ViewGroup).removeView(PostViewModel.sharedView)
         val scrollContainer = layoutInflater.inflate(R.layout.scroll_post_fragment, null, false)
-            (scrollContainer.findViewById(R.id.linearContainer) as ViewGroup).addView(PostViewModel.sharedView)
+        (scrollContainer.findViewById(R.id.linearContainer) as ViewGroup).addView(PostViewModel.sharedView)
+
+//        viewModel.navigateToFeedFragmentFromScrollPost.observe(this) { it ->
+//            findNavController().popBackStack()
+//        }
+
+//        val scrollContainer = PostViewModel.sharedView
+//        (scrollContainer?.parent as ViewGroup).removeView(scrollContainer)
+//        val myView = layoutInflater.inflate(R.layout.scroll_post_fragment, container, false)
+//        view.findViewById<>()
+//        myView.findViewById(R.layout.scroll_post_fragment)
+        //(view as View).findViewById()
+        //layoutInflater.inflate(R.layout.scroll_post_fragment, null, false)
+
+            //(scrollContainer.findViewById(R.id.linearContainer) as ViewGroup).addView(scrollContainer)
 
 //        viewModel.navigateToFeedFragmentFromScrollPost.observe(this) { it ->
 //            findNavController().popBackStack()
