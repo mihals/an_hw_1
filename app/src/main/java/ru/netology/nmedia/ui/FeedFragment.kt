@@ -16,6 +16,7 @@ import com.google.gson.Gson
 import ru.netology.nmedia.Post
 import ru.netology.nmedia.R
 import ru.netology.nmedia.ScrollPostFragment
+import ru.netology.nmedia.ScrollPostFragmentDirections
 import ru.netology.nmedia.adapter.PostAdapter
 import ru.netology.nmedia.databinding.FeedFragmentBinding
 import ru.netology.nmedia.viewModel.PostViewModel
@@ -53,12 +54,27 @@ class FeedFragment : Fragment() {
             viewModel.onSaveButtonClick(newPostContent)
         }
 
-        viewModel.navigateToPostContentScreenEvent.observeForever(){initialContent ->
+        viewModel.navigateToPostContentScreenEvent.observe(this){initialContent ->
             val curFragment = findNavController().currentDestination?.id
             val feedFragment = findNavController().findDestination(R.id.feedFragment)?.id
             val scrFragment = findNavController().findDestination(R.id.scrollPostFragment)?.id
-            val direction = FeedFragmentDirections.toPostContentFragment(initialContent)
-            findNavController().navigate(direction)
+
+            if(PostViewModel.isEditHandled) return@observe
+            if (findNavController().currentDestination?.id ==
+                findNavController().findDestination(R.id.feedFragment)?.id
+            ) {
+                val direction = FeedFragmentDirections.toPostContentFragment(initialContent)
+                findNavController().navigate(direction)
+            }
+
+            if (findNavController().currentDestination?.id ==
+                findNavController().findDestination(R.id.scrollPostFragment)?.id
+            ) {
+                val direction = ScrollPostFragmentDirections.scrollToPostContentFragment(initialContent)
+                findNavController().navigate(direction)
+            }
+            PostViewModel.isEditHandled = true
+
         }
 
         viewModel.playVideo.observe(this) { videoUrl ->
@@ -131,6 +147,10 @@ class FeedFragment : Fragment() {
             }
 
         }.root
+
+    override fun onDestroy(){
+        super.onDestroy()
+    }
 
     fun getCurrentPost(): Boolean {
         return true

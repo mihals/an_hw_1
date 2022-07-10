@@ -32,5 +32,9 @@
     <fragment
         android:id="@+id/scrollPostFragment"
         android:name="ru.netology.nmedia.ScrollPostFragment"
-        tools:layout="@layout/scroll_post_fragment" />
+        tools:layout="@layout/scroll_post_fragment" >
+        <action
+            android:id="@+id/scrollToPostContentFragment"
+            app:destination="@id/postContentFragment" />
+    </fragment>
 </navigation>

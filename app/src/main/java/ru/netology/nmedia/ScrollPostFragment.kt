@@ -16,12 +16,13 @@ import com.google.gson.Gson
 import ru.netology.nmedia.databinding.ScrollPostFragmentBinding
 import ru.netology.nmedia.ui.FeedFragment
 import ru.netology.nmedia.ui.PostContentFragment
+import ru.netology.nmedia.util.SingleLiveEvent
 import ru.netology.nmedia.viewModel.PostViewModel
 
 class ScrollPostFragment : Fragment() {
     //val m = navGraphViewModels<PostViewModel>(R.id.feedFragment)
-    private val viewModel:PostViewModel by viewModels()
-    //private val viewModel:PostViewModel by viewModels ({ requireParentFragment() })
+    //private val viewModel by viewModels ()
+    private val viewModel:PostViewModel by viewModels ({ requireParentFragment() })
     private val sc = view?.findViewById<View>(R.id.linearContainer)
 
     private val jsonPost
@@ -29,6 +30,10 @@ class ScrollPostFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel.navigateToPostContentFromScrollPost.observe(this){initialContent ->
+            PostViewModel.isEditHandled = true
+        }
 
 //        viewModel.sharePostContent.observe(this) { postContent ->
 //            val intent = Intent().apply {
@@ -90,6 +95,10 @@ class ScrollPostFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+    }
+
+    override fun onDestroy(){
+        super.onDestroy()
     }
 
     companion object{

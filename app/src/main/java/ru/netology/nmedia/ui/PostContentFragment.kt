@@ -15,10 +15,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ru.netology.nmedia.Post
 import ru.netology.nmedia.databinding.PostContentFragmentBinding
+import ru.netology.nmedia.util.SingleLiveEvent
 
 class PostContentFragment:Fragment()  {
 
     private val args  by navArgs<PostContentFragmentArgs>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +33,8 @@ class PostContentFragment:Fragment()  {
             binding.ok.setOnClickListener{onOkButtonClicked(binding)}
         }.root
 
+
+
     private fun onOkButtonClicked(binding: PostContentFragmentBinding) {
         val text = binding.edit.text
         if (!text.isNullOrBlank()) {
@@ -39,6 +43,10 @@ class PostContentFragment:Fragment()  {
             setFragmentResult(REQUEST_KEY, resultBundle)
         }
         findNavController().popBackStack()
+    }
+
+    override fun onDestroy(){
+        super.onDestroy()
     }
 
     companion object{

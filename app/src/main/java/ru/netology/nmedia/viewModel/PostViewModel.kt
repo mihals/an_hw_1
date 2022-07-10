@@ -28,6 +28,7 @@ class PostViewModel(
     val playVideo = SingleLiveEvent<String>()
     val navigateToSinglePostFragmentEvent = SingleLiveEvent<View?>()
     val navigateToFeedFragmentFromScrollPost = SingleLiveEvent<String?>()
+    val navigateToPostContentFromScrollPost = SingleLiveEvent<String>()
     var singlePostView = MutableLiveData<View?>()
 
 
@@ -71,7 +72,8 @@ class PostViewModel(
         if(sharedView!=null)
         {
         }
-        navigateToPostContentScreenEvent.value = post.content
+        //navigateToPostContentScreenEvent.value = post.content
+        navigateToPostContentFromScrollPost.value = post.content
     }
 
     override fun onPlayVideoClicked(post: Post) {
@@ -106,5 +108,6 @@ class PostViewModel(
 
     companion object{
         var sharedView:View? = null
+        var isEditHandled:Boolean = true
     }
 }

@@ -56,7 +56,7 @@ internal class PostAdapter(
                         R.id.edit -> {
                             //if(PostViewModel.sharedView!=null)
                                 //binding.root.findNavController().popBackStack()
-
+                            PostViewModel.isEditHandled = false
                             listener.onEditClicked(post)
                             true
                         }
