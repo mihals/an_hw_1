@@ -30,11 +30,6 @@ class FeedFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        if(!PostViewModel.isScrollPostEditHandled){
-//            PostViewModel.isScrollPostEditHandled = true
-//            viewModel.onSaveButtonClick(PostViewModel.scrollPostContent)
-//        }
-
         viewModel.sharePostContent.observe(this) { postContent ->
             if(PostViewModel.isShareHandled) return@observe
             val intent = Intent().apply {
@@ -71,14 +66,7 @@ class FeedFragment : Fragment() {
                 findNavController().navigate(direction)
             }
 
-//            if (findNavController().currentDestination?.id ==
-//                findNavController().findDestination(R.id.scrollPostFragment)?.id
-//            ) {
-//                val direction = ScrollPostFragmentDirections.scrollToPostContentFragment(initialContent)
-//                findNavController().navigate(direction)
-//            }
             PostViewModel.isEditHandled = true
-
         }
 
         viewModel.playVideo.observe(this) { videoUrl ->
@@ -89,11 +77,7 @@ class FeedFragment : Fragment() {
         }
 
         viewModel.navigateToSinglePostFragmentEvent.observe(this) {
-            //val jsonPost = Gson().toJson(it)
-
             findNavController().navigate(R.id.scrollPostFragment)
-                //ScrollPostFragment.createBundle(jsonPost)
-            //)
         }
 
     }
@@ -114,19 +98,6 @@ class FeedFragment : Fragment() {
             binding.fab.setOnClickListener {
                 viewModel.onAddClicked()
             }
-//            if(!PostViewModel.isScrollPostEditHandled){
-//                PostViewModel.isScrollPostEditHandled = true
-//                viewModel.onSaveButtonClick(PostViewModel.scrollPostContent)
-//            }
-
         }.root
-
-    override fun onDestroy(){
-        super.onDestroy()
-    }
-
-    fun getCurrentPost(): Boolean {
-        return true
-    }
 }
 

@@ -6,6 +6,7 @@ import android.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -43,19 +44,19 @@ internal class PostAdapter(
                 setOnMenuItemClickListener { item ->
                     when(item.itemId){
                         R.id.remove -> {
-                            //val root = binding.root
-                            //findNavController(FeedFragmentBinding).currentDestination
                             val ctx = getContext()
-
-                            //findNavController()
-                            //listener.onRemoveFromScrolledPost()
                             listener.onRemoveClicked(post)
-                            binding.root.findNavController().popBackStack()
+                            with(binding.root.findNavController()){
+                                if(currentDestination?.id ==
+                                    findDestination(R.id.scrollPostFragment)?.id)
+                                popBackStack()
+                            }
+//                            if(binding.root.findNavController().currentDestination?.id==
+//                                findNavController().findDestination(R.id.scrollPostFragment)?.id)
+//                            binding.root.findNavController().popBackStack()
                             true
                         }
                         R.id.edit -> {
-                            //if(PostViewModel.sharedView!=null)
-                                //binding.root.findNavController().popBackStack()
                             PostViewModel.isEditHandled = false
                             listener.onEditClicked(post)
                             true

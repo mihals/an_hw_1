@@ -105,8 +105,6 @@ class FilePostRepository(
     }
 
     private companion object {
-        const val GENERATED_POST_AMOUNT = 20
-        const val POSTS_PREFS_KEY = "posts"
         const val NEXT_ID_PREFS_KEY = "posts"
         const val FILE_NAME = "posts.json"
     }

@@ -24,15 +24,8 @@ import ru.netology.nmedia.util.SingleLiveEvent
 import ru.netology.nmedia.viewModel.PostViewModel
 
 class ScrollPostFragment : Fragment() {
-    //val m = navGraphViewModels<PostViewModel>(R.id.feedFragment)
-    //private val viewModel by viewModels ()
-    //private val viewModel:PostViewModel by viewModels ({ requireParentFragment() })
-    //private val sc = view?.findViewById<View>(R.id.linearContainer)
 
     private val viewModel:PostViewModel by activityViewModels ()
-    private var postContent: String? = null
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +48,6 @@ class ScrollPostFragment : Fragment() {
                 (view?.findViewById(R.id.share) as TextView).text =
                     (++share).toString()
 
-            //view?.invalidate()
             PostViewModel.isShareHandled = true
         }
 
@@ -65,14 +57,6 @@ class ScrollPostFragment : Fragment() {
             startActivity(intent)
             PostViewModel.isPlayVideoHandled = true
         }
-
-//        if(postContent == null){
-//            postContent = (PostViewModel.sharedView?.findViewById(
-//                R.id.postContent) as TextView).text.toString()
-//        }
-
-        //findNavController().setOnBackPressedDispatcher()
-
 
         viewModel.navigateToPostContentFromScrollPost.observe(this) { initialContent ->
             if(PostViewModel.isEditHandled) return@observe
@@ -93,39 +77,10 @@ class ScrollPostFragment : Fragment() {
             val newPostContent = bundle.getString(PostContentFragment.RESULT_KEY
             )?: return@setFragmentResultListener
             (view?.findViewById(R.id.postContent) as TextView).setText(newPostContent)
-
-        //PostViewModel.isScrollPostEditHandled=false
-            //PostViewModel.scrollPostContent = newPostContent
-//            (PostViewModel.sharedView?.findViewById(
-//                R.id.postContent) as TextView).setText(newPostContent)
             viewModel.onSaveButtonClick(newPostContent)
         }
 
     }
-
-//        viewModel.sharePostContent.observe(this) { postContent ->
-//            val intent = Intent().apply {
-//                action = Intent.ACTION_SEND
-//                putExtra(Intent.EXTRA_TEXT, postContent)
-//                type = "text/plain"
-//            }
-//
-//            val shareIntent = Intent.createChooser(
-//                intent, getString(R.string.chooser_share_post)
-//            )
-//            startActivity(shareIntent)
-//        }
-
-//        viewModel.navigateToFeedFragmentFromScrollPost.observe(this){it ->
-//            findNavController().popBackStack()
-//        }
-//        viewModel.navigateToFeedFragmentFromScrollPost.observe(this){
-//            val direction = ScrollPostFragmentDirections
-//                .scrollPostFragmentToFeedFragment()
-//            findNavController().navigate(direction)
-//        }
-//        viewModel.navigateToFeedFragmentFromScrollPost.hasObservers()
-//        viewModel.navigateToFeedFragmentFromScrollPost.hasActiveObservers()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -135,16 +90,7 @@ class ScrollPostFragment : Fragment() {
         (PostViewModel.sharedView?.parent as ViewGroup).removeView(PostViewModel.sharedView)
         val scrollContainer = layoutInflater.inflate(R.layout.scroll_post_fragment, null, false)
         (scrollContainer.findViewById(R.id.linearContainer) as ViewGroup).addView(PostViewModel.sharedView)
-//        (scrollContainer.findViewById(R.id.postContent) as TextView)
-//            .setText(postContent)
-
         return scrollContainer//.findViewById(R.id.postContent)
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        //val share = (view?.findViewById(R.id.share) as TextView).text
     }
 
     override fun onDetach() {
@@ -152,13 +98,6 @@ class ScrollPostFragment : Fragment() {
 
         (viewModel.currentPost.value?.content)?.let{
             viewModel.onSaveButtonClick(it)}
-    }
-
-    override fun onDestroy(){
-//        val post = postContent?.let { viewModel.currentPost.value?.copy(content = it) }
-//        if (post != null)
-//            viewModel.onUpdatePost(post)
-        super.onDestroy()
     }
 
     companion object{

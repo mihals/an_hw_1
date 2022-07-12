@@ -29,8 +29,6 @@ class PostViewModel(
     val navigateToSinglePostFragmentEvent = SingleLiveEvent<View>()
     val navigateToFeedFragmentFromScrollPost = SingleLiveEvent<String?>()
     val navigateToPostContentFromScrollPost = SingleLiveEvent<String>()
-    var singlePostView = MutableLiveData<View?>()
-
 
     override fun onLikeClicked(post: Post) = repository.like(post.id)
 
@@ -42,10 +40,8 @@ class PostViewModel(
     }
 
     override fun onRemoveClicked(post: Post) {
-        //currentPost.value=post
-        //findNavController(R.id.nav_graph)
         repository.delete(post.id)
-        navigateToFeedFragmentFromScrollPost.call()
+        //navigateToFeedFragmentFromScrollPost.call()
     }
 
     val currentPost = MutableLiveData<Post?>(null)
