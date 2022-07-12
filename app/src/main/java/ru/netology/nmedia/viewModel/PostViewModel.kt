@@ -26,7 +26,7 @@ class PostViewModel(
     val sharePostContent = SingleLiveEvent<String>()
     val navigateToPostContentScreenEvent = SingleLiveEvent<String>()
     val playVideo = SingleLiveEvent<String>()
-    val navigateToSinglePostFragmentEvent = SingleLiveEvent<View?>()
+    val navigateToSinglePostFragmentEvent = SingleLiveEvent<View>()
     val navigateToFeedFragmentFromScrollPost = SingleLiveEvent<String?>()
     val navigateToPostContentFromScrollPost = SingleLiveEvent<String>()
     var singlePostView = MutableLiveData<View?>()
@@ -35,6 +35,7 @@ class PostViewModel(
     override fun onLikeClicked(post: Post) = repository.like(post.id)
 
     override fun onShareClicked(post: Post) {
+        PostViewModel.isShareHandled = false
         repository.share(post.id)
         sharePostContent.value = post.content
 
@@ -69,14 +70,13 @@ class PostViewModel(
 
     override fun onEditClicked(post: Post) {
         currentPost.value=post
-        if(sharedView!=null)
-        {
-        }
-        //navigateToPostContentScreenEvent.value = post.content
+        isEditHandled = false
+        navigateToPostContentScreenEvent.value = post.content
         navigateToPostContentFromScrollPost.value = post.content
     }
 
     override fun onPlayVideoClicked(post: Post) {
+        PostViewModel.isPlayVideoHandled = false
         val url = requireNotNull(post.video)
         playVideo.value = url
     }
@@ -88,6 +88,7 @@ class PostViewModel(
     fun onDeleteViewClicked(post:Post) = repository.delete(post.id)
 
     fun onAddClicked() {
+        isEditHandled = false
         navigateToPostContentScreenEvent.call()
     }
 
@@ -102,12 +103,13 @@ class PostViewModel(
     override fun onRemoveFromScrolledPost() {
         val obs = navigateToFeedFragmentFromScrollPost.hasObservers()
         val activeObs = navigateToFeedFragmentFromScrollPost.hasActiveObservers()
-        //navigateToFeedFragmentFromScrollPost.value="str"
         navigateToFeedFragmentFromScrollPost.call()
     }
 
     companion object{
         var sharedView:View? = null
         var isEditHandled:Boolean = true
+        var isShareHandled:Boolean = true
+        var isPlayVideoHandled:Boolean = true
     }
 }

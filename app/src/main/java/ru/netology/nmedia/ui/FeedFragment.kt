@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.GravityCompat.apply
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -24,15 +25,18 @@ import java.lang.ProcessBuilder.Redirect.to
 
 class FeedFragment : Fragment() {
 
-    private val viewModel by viewModels <PostViewModel>()
+    private val viewModel:PostViewModel by activityViewModels ()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.sharePostContent.observe(this) { postContent ->
-            //val srcFragment = findNavController()?.currentDestination?.id
-            //val feedFragmentId= R.id.scrollPostFragment
+//        if(!PostViewModel.isScrollPostEditHandled){
+//            PostViewModel.isScrollPostEditHandled = true
+//            viewModel.onSaveButtonClick(PostViewModel.scrollPostContent)
+//        }
 
+        viewModel.sharePostContent.observe(this) { postContent ->
+            if(PostViewModel.isShareHandled) return@observe
             val intent = Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(Intent.EXTRA_TEXT, postContent)
@@ -43,7 +47,7 @@ class FeedFragment : Fragment() {
                 intent, getString(R.string.chooser_share_post)
             )
             startActivity(shareIntent)
-            //PostViewModel.sharedView?.update()
+            PostViewModel.isShareHandled = true
         }
 
         setFragmentResultListener(requestKey = PostContentFragment.REQUEST_KEY){
@@ -60,74 +64,38 @@ class FeedFragment : Fragment() {
             val scrFragment = findNavController().findDestination(R.id.scrollPostFragment)?.id
 
             if(PostViewModel.isEditHandled) return@observe
+
             if (findNavController().currentDestination?.id ==
-                findNavController().findDestination(R.id.feedFragment)?.id
-            ) {
+                findNavController().findDestination(R.id.feedFragment)?.id) {
                 val direction = FeedFragmentDirections.toPostContentFragment(initialContent)
                 findNavController().navigate(direction)
             }
 
-            if (findNavController().currentDestination?.id ==
-                findNavController().findDestination(R.id.scrollPostFragment)?.id
-            ) {
-                val direction = ScrollPostFragmentDirections.scrollToPostContentFragment(initialContent)
-                findNavController().navigate(direction)
-            }
+//            if (findNavController().currentDestination?.id ==
+//                findNavController().findDestination(R.id.scrollPostFragment)?.id
+//            ) {
+//                val direction = ScrollPostFragmentDirections.scrollToPostContentFragment(initialContent)
+//                findNavController().navigate(direction)
+//            }
             PostViewModel.isEditHandled = true
 
         }
 
         viewModel.playVideo.observe(this) { videoUrl ->
+            if(PostViewModel.isPlayVideoHandled) return@observe
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl))
             startActivity(intent)
+            PostViewModel.isPlayVideoHandled = true
         }
 
         viewModel.navigateToSinglePostFragmentEvent.observe(this) {
-            val jsonPost = Gson().toJson(it)
+            //val jsonPost = Gson().toJson(it)
 
-            findNavController().navigate(
-                R.id.scrollPostFragment,
-                ScrollPostFragment.createBundle(jsonPost)
-            )
+            findNavController().navigate(R.id.scrollPostFragment)
+                //ScrollPostFragment.createBundle(jsonPost)
+            //)
         }
 
-//        viewModel.navigateToFeedFragmentFromScrollPost.observe(this){
-//            //val direction = ScrollPostFragmentDirections
-//            //    .scrollPostFragmentToFeedFragment()
-//            val ctr = findNavController()//.navigate(direction)
-//        }
-
-
-
-//        val postContentActivityLauncher =
-//            registerForActivityResult(PostContentActivity.ResultContract)
-//            { editIntent ->
-//                val postId = editIntent?.getLongExtra("postId", 0L)
-//                val postContent = editIntent?.getStringExtra("postNewContent")
-//                editIntent ?: return@registerForActivityResult
-//                postContent ?: return@registerForActivityResult
-//
-//                if (postId == 0L) {
-//                    viewModel.onSaveButtonClick(postContent)
-//                }
-//                else if(postId!=null){
-//                    val srcPost = PostContentActivity.ResultContract.getSrcPost()
-//                    val resultPost = srcPost.copy(id=postId,content = postContent)
-//                    viewModel.onUpdatePost(resultPost)
-//                }
-//            }
-
-//        val postContentActivityLauncher =
-//            registerForActivityResult(PostContentActivity.ResultContract)
-//            { postContent ->
-//                postContent?: return@registerForActivityResult
-//                viewModel.onSaveButtonClick(postContent)
-//            }
-
-//        viewModel.navigateToPostContentScreenEvent.observe(this) {
-//            //intent.putExtra("postContent", it?.content)
-//            postContentActivityLauncher.launch()
-//        }
     }
 
     override fun onCreateView(
@@ -136,6 +104,7 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?
     ) = FeedFragmentBinding.inflate(layoutInflater, container, false)
         .also { binding ->
+            PostViewModel.sharedView?.invalidate()
             PostViewModel.sharedView = null
             val adapter = PostAdapter(viewModel)
             binding.postRecyclerView.adapter = adapter
@@ -145,6 +114,10 @@ class FeedFragment : Fragment() {
             binding.fab.setOnClickListener {
                 viewModel.onAddClicked()
             }
+//            if(!PostViewModel.isScrollPostEditHandled){
+//                PostViewModel.isScrollPostEditHandled = true
+//                viewModel.onSaveButtonClick(PostViewModel.scrollPostContent)
+//            }
 
         }.root
 
@@ -155,7 +128,5 @@ class FeedFragment : Fragment() {
     fun getCurrentPost(): Boolean {
         return true
     }
-
-
 }
 
